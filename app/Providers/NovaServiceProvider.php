@@ -19,7 +19,15 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         parent::boot();
 
-        Nova::footer(function ($Request){
+        $this->getFooter();
+    }
+
+    /**
+     * @return void
+     */
+    public function getFooter(): void
+    {
+        Nova::footer(function ($Request) {
             return Blade::render('back/footer');
         });
     }
