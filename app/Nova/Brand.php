@@ -2,25 +2,22 @@
 
 namespace App\Nova;
 
-use Faker\Provider\Text;
 use Illuminate\Http\Request;
-use Illuminate\Mail\Markdown;
-use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\Currency;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Slug;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\URL;
 
-class Product extends Resource
+class Brand extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var class-string<\App\Models\Product>
+     * @var class-string<\App\Models\Brand>
      */
-    public static $model = \App\Models\Product::class;
+    public static $model = \App\Models\Brand::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -35,11 +32,9 @@ class Product extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name','description','sku'
+        'id','name'
     ];
-    public static $tableStyle='tight';
-    public static $clickAction='edit';
-    public static $perPageOptions=[10,50,100];
+
     /**
      * Get the fields displayed by the resource.
      *
@@ -49,56 +44,31 @@ class Product extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            Slug::make('Slug')
-                ->from('name')
-                ->required()
-                ->hideFromIndex()
-                ->textAlign('left')
-                ->withMeta(['extraAttributes'=>[
-                    'readonly'=> true
-                ]]),
-
-            \Laravel\Nova\Fields\Text::make('Name')
-                ->required()
-                ->showOnPreview()
-                ->placeholder('Product Name...')
-                ->textAlign('left')
-                ->sortable(),
-
-            \Laravel\Nova\Fields\Markdown::make('Description')
-                ->required()
+                Text::make('Name')
+                ->sortable()
+                ->rules ('required','max:255')
+                ->updateRules('unique:brands,name,{{resourceId}}')
+                ->creationRules('unique:brands,name,{{resourceId}}')
                 ->showOnPreview(),
-            Currency::make('Price')->required()
-                ->currency('TND')
-                ->showOnPreview()
-                ->placeholder('Product Price...')
-                ->textAlign('left')
-                ->sortable(),
 
-            \Laravel\Nova\Fields\Text::make('SKU')
+
+            \Laravel\Nova\Fields\URL::make('Go To WebSite','website_url')
                 ->required()
                 ->showOnPreview()
-                ->placeholder('Product SKU...')
-                ->textAlign('left')
-                ->help('Number for traking your Product')
-                ->sortable(),
+                ->textAlign('left'),
 
-            Number::make('Quantity')
+            Text::make('Industry')
+                ->sortable()
                 ->required()
                 ->showOnPreview()
-                ->placeholder('Product Quantity...')
-                ->textAlign('center')
-                ->sortable(),
-
-            BelongsTo::make('Brand')
-                ->required()
-                ->showOnPreview(),
+                ->textAlign('left'),
 
             Boolean::make('Status','is_published')
-                ->required()
+                ->sortable()
                 ->showOnPreview()
-                ->sortable(),
+                ->textAlign('left'),
 
+            HasMany::make('Products')
 
         ];
     }
