@@ -1,6 +1,8 @@
 # Laravel10-Nova-4-Dashboard
 Laravel 10 Nova 4 Dashboard
 
+<p><span style="color: #000000;"><strong> <img src="https://nova.laravel.com/img/laravel-nova-mockup-light.png" width="500" height="400" /></strong></span></p>
+
 <p>&nbsp;</p>
 <p><span style="color: #000000;"><strong>Enjoy!</strong></span></p>
 <p><span style="color: #000000;"><strong>Thank you from Tunisia! <img src="https://html-online.com/editor/tiny4_9_11/plugins/emoticons/img/smiley-wink.gif" alt="wink" /></strong></span></p>
